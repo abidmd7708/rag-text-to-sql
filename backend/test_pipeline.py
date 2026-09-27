@@ -1,7 +1,6 @@
-from schema import get_database_schema, format_schema
-from llm import generate_sql
-from validator import validate_sql, clean_sql
-from database import get_connection
+from .llm import generate_sql
+from .validator import validate_sql, clean_sql
+from .database import get_connection
 
 
 def execute_sql(sql):
@@ -26,17 +25,10 @@ if __name__ == "__main__":
     print("\nQuestion:")
     print(question)
 
-    # 1. Get database schema
-    schema = get_database_schema()
-    formatted_schema = format_schema(schema)
-
-    # 2. Generate SQL
+    # 1. Generate SQL using RAG + Qwen
     print("\nGenerating SQL...\n")
 
-    sql = generate_sql(
-        question,
-        formatted_schema
-    )
+    sql = generate_sql(question)
 
     sql = clean_sql(sql)
 
@@ -45,7 +37,7 @@ if __name__ == "__main__":
     print(sql)
     print("=" * 60)
 
-    # 3. Validate SQL
+    # 2. Validate SQL
     valid, message = validate_sql(sql)
 
     print("\nValidation:")
@@ -55,12 +47,12 @@ if __name__ == "__main__":
         print("\nSQL rejected.")
         exit()
 
-    # 4. Execute SQL
+    # 3. Execute SQL
     print("\nExecuting SQL...\n")
 
     columns, rows = execute_sql(sql)
 
-    # 5. Display result
+    # 4. Display result
     print("Results:")
     print("=" * 60)
 

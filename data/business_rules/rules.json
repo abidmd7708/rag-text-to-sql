@@ -1,0 +1,30 @@
+[
+  {
+    "id": "rule_001",
+    "rule": "Revenue and customer spending calculations must include only completed orders."
+  },
+  {
+    "id": "rule_002",
+    "rule": "Cancelled orders must be excluded from revenue and customer spending calculations."
+  },
+  {
+    "id": "rule_003",
+    "rule": "Order revenue is calculated as product price multiplied by ordered quantity."
+  },
+  {
+    "id": "rule_004",
+    "rule": "Customer spending is the sum of product price multiplied by quantity for products purchased through completed orders."
+  },
+  {
+    "id": "rule_005",
+    "rule": "Customers must be connected to orders using customers.id = orders.customer_id."
+  },
+  {
+    "id": "rule_006",
+    "rule": "Orders must be connected to order_items using orders.id = order_items.order_id."
+  },
+  {
+    "id": "rule_007",
+    "rule": "Products must be connected to order_items using products.id = order_items.product_id."
+  }
+]

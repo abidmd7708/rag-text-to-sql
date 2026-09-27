@@ -1,7 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from .schema import get_database_schema, format_schema
 from .llm import generate_sql
 from .validator import validate_sql, clean_sql
 from .database import get_connection
@@ -53,18 +52,22 @@ def query_database(request: QueryRequest):
             detail="Question cannot be empty."
         )
 
-    # Get live database schema
-    schema = get_database_schema()
+    # Generate SQL using RAG + Qwen
+    try:
 
-    formatted_schema = format_schema(schema)
-
-    # Generate SQL
-    sql = clean_sql(
-        generate_sql(
-            question,
-            formatted_schema
+        sql = clean_sql(
+            generate_sql(question)
         )
-    )
+
+    except Exception as e:
+
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "error": "SQL generation failed",
+                "message": str(e)
+            }
+        )
 
     # Validate SQL
     valid, message = validate_sql(sql)
