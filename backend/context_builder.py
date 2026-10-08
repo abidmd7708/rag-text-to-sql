@@ -20,31 +20,20 @@ def extract_tables_from_sql(sql):
 
     return list(dict.fromkeys(tables))
 
-
-def get_schema_for_tables(table_names):
-    """
-    Retrieve schema documents for the required tables.
-    """
-
+def get_schema_for_tables(table_names, reranked_schema_documents):
     schema_documents = []
 
     for table_name in table_names:
+        for document in reranked_schema_documents:
+            table_match = re.search(
+                r"Table:\s*(\w+)",
+                document["text"],
+                flags=re.IGNORECASE
+            )
 
-        results = search_similar_documents(
-            f"Table {table_name}",
-            top_k=1,
-            document_type="schema"
-        )
-
-        if results["ids"][0]:
-
-            document = {
-                "id": results["ids"][0][0],
-                "type": "schema",
-                "text": results["documents"][0][0],
-            }
-
-            schema_documents.append(document)
+            if table_match and table_match.group(1) == table_name:
+                schema_documents.append(document)
+                break
 
     return schema_documents
 
@@ -148,7 +137,7 @@ def retrieve_context(query, top_k_per_type=3):
     # --------------------------------------------------
 
     schema_documents = get_schema_for_tables(
-        required_tables
+        required_tables,[document for document in reranked if document["type"] == "schema"]
     )
 
     return {
