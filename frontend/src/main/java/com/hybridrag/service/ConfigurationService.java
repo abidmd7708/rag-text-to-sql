@@ -1,0 +1,3 @@
+package com.hybridrag.service;
+import java.util.prefs.Preferences;
+public final class ConfigurationService { private static final Preferences PREFS=Preferences.userNodeForPackage(ConfigurationService.class); private ConfigurationService(){} public static String getBackendUrl(){return PREFS.get("backendUrl","http://127.0.0.1:8000");} public static void setBackendUrl(String url){PREFS.put("backendUrl",url.trim().replaceAll("/+$",""));} }

@@ -22,3 +22,7 @@ data/chroma/
 # OS files
 .DS_Store
 Thumbs.db
+
+# JavaFX / Maven frontend
+frontend/.venv/
+frontend/target/

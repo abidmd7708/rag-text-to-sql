@@ -9,7 +9,7 @@ OLLAMA_URL = os.getenv(
     "http://localhost:11434"
 )
 
-EMBEDDING_MODEL = "qwen3-embedding:4b"
+EMBEDDING_MODEL = "nomic-embed-text"
 
 
 def create_embedding(text):
